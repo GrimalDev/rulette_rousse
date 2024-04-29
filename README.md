@@ -25,5 +25,6 @@
 - poulet : soigne 1 pv.
 - pince : Vole un objet à ton adversaire.
 - grenade : rajoute 1 de dégâts si une vraie balle est dans la chambre.
+- 
 ![image](https://github.com/GrimalDev/rulette_rousse/assets/100758364/456ca20c-b2ad-414b-a210-c209ddfa5fe2)
 
