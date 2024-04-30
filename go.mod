@@ -1,3 +1,3 @@
 module test/rulette_rousse
 
-go 1.22
+go 1.16
