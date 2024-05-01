@@ -1,15 +1,35 @@
 {{ block "index" . }}
 <html lang="en">
-    <head>
-        <title>Document</title>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
-    </head>
-    <body>
-        Count is {{ .Count }}
-        <button hx-post="/count">Count</button>
-    </body>
+<head>
+    <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
+</head>
+<body>
+    {{ template "form" . }}
+    <hr />
+    {{ template "display" . }}
+</body>
 </html>
+{{ end }}
+
+{{ block "form" . }}
+<form hx-post="/contacts">
+    name : <input type="text" name="name">
+    email : <input type="text" email="email">
+    <button type="submit">Create Contact</button>
+</form>
+{{ end }}
+
+{{ block "display" . }}
+ <div style="display: flex; flex-direction: column">
+     {{ range .Contacts }}
+        <div>
+            Name : <span> {{ .Name }}</span>
+            Email : <span> {{ .Email }}</span>
+        </div>
+     {{ end }}
+ </div>
 {{ end }}
