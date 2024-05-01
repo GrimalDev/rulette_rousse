@@ -1,35 +1,41 @@
 {{ block "index" . }}
 <html lang="en">
 <head>
-    <title>Document</title>
+    <title>Rulette Rousse</title>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <!--    Ligne pour integrer HTMX au projet-->
     <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
 </head>
 <body>
-    {{ template "form" . }}
-    <hr />
-    {{ template "display" . }}
+    <h1>Rulette Rousse</h1>
+    {{ .id }}
+    <h2>Bonjour joueur nr : </h2>
+    <div id="btn_box">
+        {{ template "play_rand_btn" .}}
+        {{ template "play_friend_btn" .}}
+        {{ template "leaderboard_btn" .}}
+    </div>
+
 </body>
 </html>
 {{ end }}
 
-{{ block "form" . }}
-<form hx-post="/contacts">
-    name : <input type="text" name="name">
-    email : <input type="text" email="email">
-    <button type="submit">Create Contact</button>
-</form>
+{{ block "play_rand_btn" . }}
+<a href="#" hx-post="/play_random">
+    <button type="submit">Jouer</button>
+</a>
 {{ end }}
 
-{{ block "display" . }}
- <div style="display: flex; flex-direction: column">
-     {{ range .Contacts }}
-        <div>
-            Name : <span> {{ .Name }}</span>
-            Email : <span> {{ .Email }}</span>
-        </div>
-     {{ end }}
- </div>
+{{ block "play_friend_btn" . }}
+<a href="#" hx-post="/play_friend">
+    <button type="submit">Jouer avec un ami</button>
+</a>
+{{ end }}
+
+{{ block "leaderboard_btn" . }}
+<a href="#" hx-post="/leaderboard">
+    <button type="submit">Tableau des scores</button>
+</a>
 {{ end }}

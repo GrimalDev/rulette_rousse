@@ -7,6 +7,7 @@ import (
 	"io"
 )
 
+// Creation du type templates
 type templates struct {
 	templates *template.Template
 }
@@ -21,56 +22,27 @@ func newTemplate() *templates {
 	}
 }
 
-type Contact struct {
-	Name  string
-	Email string
+type User struct {
+	id int
 }
 
-func NewContact(name, email string) Contact {
-	return Contact{
-		Name:  name,
-		Email: email,
+func getUser() User {
+	return User{
+		id: 10,
 	}
 }
-
-type Contacts = []Contact
-
-type Data struct {
-	Contacts Contacts
-}
-
-func NewData() Data {
-	return Data{
-		Contacts: []Contact{
-			NewContact("john", "aaa@b.com"),
-			NewContact("billy", "bbb@b.com"),
-			NewContact("ewan", "ccc@b.com"),
-			NewContact("bob", "ddd@b.com"),
-		},
-	}
-}
-
-type Count struct {
-	Count int
-}
-
 func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 
-	data := NewData()
+	userId := getUser()
+
 	e.Renderer = newTemplate()
 
+	// Page d'accueil du site
 	e.GET("/", func(c echo.Context) error {
-		return c.Render(200, "index", data)
+		return c.Render(200, "index", userId)
 	})
 
-	e.POST("/contacts", func(c echo.Context) error {
-		name := c.FormValue("name")
-		email := c.FormValue("email")
-		data.Contacts = append(data.Contacts, NewContact(name, email))
-
-		return c.Render(200, "index", data)
-	})
 	e.Logger.Fatal(e.Start(":8080"))
 }
