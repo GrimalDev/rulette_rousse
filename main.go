@@ -42,6 +42,7 @@ func main() {
 	// Page d'accueil du site
 	e.GET("/", func(c echo.Context) error {
 		return c.Render(200, "index", userId)
+
 	})
 
 	e.Logger.Fatal(e.Start(":8080"))
