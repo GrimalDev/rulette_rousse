@@ -1,43 +1,48 @@
 package main
 
 import (
-	"html/template"
-	"io"
-
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"html/template"
+	"io"
 )
 
-type Templates struct {
-	tmpl *template.Template
+// Creation du type templates
+type templates struct {
+	templates *template.Template
 }
 
-func newTemplate() *Templates {
-	return &Templates{
-		tmpl: template.Must(template.ParseGlob("views/*.html")),
+func (t *templates) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return t.templates.ExecuteTemplate(w, name, data)
+}
+
+func newTemplate() *templates {
+	return &templates{
+		templates: template.Must(template.ParseGlob("views/*.html")),
 	}
 }
 
-func (t *Templates) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	return t.tmpl.ExecuteTemplate(w, name, data)
+type User struct {
+	id int
 }
 
-type Count struct {
-	Count int
+func getUser() User {
+	return User{
+		id: 10,
+	}
 }
-
 func main() {
-
 	e := echo.New()
-
-	count := Count{Count: 0}
-
-	e.Renderer = newTemplate()
 	e.Use(middleware.Logger())
 
+	userId := getUser()
+
+	e.Renderer = newTemplate()
+
+	// Page d'accueil du site
 	e.GET("/", func(c echo.Context) error {
-		count.Count++
-		return c.Render(200, "index.html", count)
+		return c.Render(200, "index", userId)
+
 	})
 
 	e.Logger.Fatal(e.Start(":8080"))
