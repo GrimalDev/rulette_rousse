@@ -1,15 +1,18 @@
 package main
 
 import (
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"html/template"
 	"io"
+	"rulette_rousse/lib"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 // Creation du type templates
 type templates struct {
 	templates *template.Template
+	// game.baptiste()
 }
 
 func (t *templates) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
@@ -22,20 +25,9 @@ func newTemplate() *templates {
 	}
 }
 
-type User struct {
-	id int
-}
-
-func getUser() User {
-	return User{
-		id: 10,
-	}
-}
 func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
-
-	userId := getUser()
 
 	e.Renderer = newTemplate()
 
@@ -48,7 +40,28 @@ func main() {
 
 	// Page d'accueil du site
 	e.GET("/", func(c echo.Context) error {
-		return c.Render(200, "index", userId)
+		return c.Render(200, "index", 0)
+	})
+
+	// Page d'accueil du site
+	e.GET("/game", func(c echo.Context) error {
+		return c.Render(200, "game", 0)
+	})
+
+	// Page d'accueil du site
+	e.GET("/homePage", func(c echo.Context) error {
+		return c.Render(200, "homePage", 0)
+	})
+
+	// Page de jouer avec un ami
+	e.GET("/friendInvite", func(c echo.Context) error {
+		return c.Render(200, "playFriendPage", 0)
+	})
+
+	// Page de jouer avec un ami
+	e.GET("/createGame", func(c echo.Context) error {
+		// code := Game.getCode()
+		return c.Render(200, "createGame", 0)
 	})
 
 	e.Logger.Fatal(e.Start(":8080"))

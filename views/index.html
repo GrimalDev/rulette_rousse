@@ -29,7 +29,10 @@
         <h1 class="text-7xl font-extrabold text-center py-4 text-gray-50">
           Rulette Rousse
         </h1>
-        <div class="h-full w-full flex items-center justify-center">
+        <div
+          id="content"
+          class="relative h-full w-full flex items-center justify-center"
+        >
           {{ template "homePage" . }}
         </div>
       </main>
@@ -41,19 +44,23 @@
   <button
     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-2"
     type="submit"
+    hx-target="#content"
+    hx-swap="innerHTML"
+    hx-get="/createGame"
   >
     Jouer
   </button>
   <button
-    class="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-2"
+    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full my-2"
     type="submit"
-    hx-target="main"
+    hx-target="#content"
     hx-swap="innerHTML"
+    hx-get="/friendInvite"
   >
     Jouer avec un ami
   </button>
   <button
-    class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-2"
+    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full my-2"
     type="submit"
   >
     leaderboard
@@ -61,9 +68,9 @@
 </div>
 {{ end }} {{ block "playFriendPage" . }}
 <div id="play-friend-code-box">
-  <form>
+  <form class="flex items-center flex-col">
     <input
-      type="number"
+      type="text"
       id="play-friend-code-box"
       name="code"
       value=""
@@ -78,5 +85,38 @@
       Jouer
     </button>
   </form>
+
+  <button
+    type="button"
+    class="text-gray-900 bg-white hover:bg-gray-300 text-white font-bold py-2 px-4 rounded-full absolute left-0 bottom-0 m-2"
+    hx-target="#content"
+    hx-swap="innerHTML"
+    hx-get="/homePage"
+  >
+    <
+  </button>
 </div>
-{{ end }
+{{ end }} {{ block "createGame" . }}
+<div id="play-friend-code-box">
+  <h2 class="text-white text-3xl" style="backdrop-filter: blur(3px)">
+    Donnez ce code à un ami
+  </h2>
+  <div
+    class="bg-gray-800 flex justify-center items-center w-100 px-5 rounded-xl"
+  >
+    <h1 class="text-5xl font-extrabold text-center py-4 text-gray-50">
+      {{ .Code }}
+    </h1>
+  </div>
+
+  <button
+    type="button"
+    class="text-gray-900 bg-white hover:bg-gray-300 text-white font-bold py-2 px-4 rounded-full absolute left-0 bottom-0 m-2"
+    hx-target="#content"
+    hx-swap="innerHTML"
+    hx-get="/homePage"
+  >
+    <
+  </button>
+</div>
+{{ end }}
