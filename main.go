@@ -39,9 +39,11 @@ func main() {
 
 	e.Renderer = newTemplate()
 
-	e.Static("/public", "static")
 	e.GET("/public/*", func(c echo.Context) error {
-		return c.File()
+		//get route path
+		path := c.Request().URL.Path
+		//return file
+		return c.File("." + path)
 	})
 
 	// Page d'accueil du site
