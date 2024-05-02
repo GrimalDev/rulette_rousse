@@ -37,7 +37,7 @@
   </body>
 </html>
 {{ end }} {{ block "homePage" . }}
-<div id="btn_box" class="flex flex-col p-3 w-3/5">
+<div id="btn_menu_box" class="flex flex-col p-3 w-3/5">
   <button
     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-2"
     type="submit"
@@ -47,6 +47,8 @@
   <button
     class="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-2"
     type="submit"
+    hx-target="main"
+    hx-swap="innerHTML"
   >
     Jouer avec un ami
   </button>
@@ -57,4 +59,24 @@
     leaderboard
   </button>
 </div>
-{{ end }}
+{{ end }} {{ block "playFriendPage" . }}
+<div id="play-friend-code-box">
+  <form>
+    <input
+      type="number"
+      id="play-friend-code-box"
+      name="code"
+      value=""
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="Entrer code ami"
+      required
+    />
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-2"
+      type="submit"
+    >
+      Jouer
+    </button>
+  </form>
+</div>
+{{ end }
