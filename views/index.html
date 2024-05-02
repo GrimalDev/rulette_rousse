@@ -7,10 +7,10 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <!--    Ligne pour integrer HTMX au projet-->
     <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
     <h1>Rulette Rousse</h1>
-    {{ .id }}
     <h2>Bonjour joueur nr : </h2>
     <div id="btn_box">
         {{ template "play_rand_btn" .}}
