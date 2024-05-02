@@ -39,6 +39,11 @@ func main() {
 
 	e.Renderer = newTemplate()
 
+	e.Static("/public", "static")
+	e.GET("/public/*", func(c echo.Context) error {
+		return c.File()
+	})
+
 	// Page d'accueil du site
 	e.GET("/", func(c echo.Context) error {
 		return c.Render(200, "index", userId)
