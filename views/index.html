@@ -7,35 +7,32 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <!--    Ligne pour integrer HTMX au projet-->
     <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
+    <!--    Ligne pour integrer TailwindCSS au projet-->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Rulette Rousse</h1>
-    <h2>Bonjour joueur nr : </h2>
-    <div id="btn_box">
-        {{ template "play_rand_btn" .}}
-        {{ template "play_friend_btn" .}}
-        {{ template "leaderboard_btn" .}}
+<body class="w-100">
+<div class="bg-black">
+    <h1 class="text-7xl font-extrabold text-center">Rulette Rousse</h1>
+    <div id="main" class="flex items-center h-screen">
+        {{ template "homePage" . }}
     </div>
-
+</div>
 </body>
 </html>
 {{ end }}
 
-{{ block "play_rand_btn" . }}
-<a href="#" hx-post="/play_random">
-    <button type="submit">Jouer</button>
-</a>
+
+{{ block "homePage" . }}
+<div id="btn_box" class="flex flex-col p-3 w-screen">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-2" type="submit">
+        Jouer
+    </button>
+    <button class="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-2" type="submit">
+        Jouer avec un ami
+    </button>
+    <button class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-2" type="submit">
+        leaderboard
+    </button>
+</div>
 {{ end }}
 
-{{ block "play_friend_btn" . }}
-<a href="#" hx-post="/play_friend">
-    <button type="submit">Jouer avec un ami</button>
-</a>
-{{ end }}
-
-{{ block "leaderboard_btn" . }}
-<a href="#" hx-post="/leaderboard">
-    <button type="submit">Tableau des scores</button>
-</a>
-{{ end }}
