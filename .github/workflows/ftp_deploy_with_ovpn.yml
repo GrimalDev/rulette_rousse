@@ -1,0 +1,63 @@
+name: FTP Deploy with OpenVPN
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install OpenVPN
+        run: |
+          sudo apt-get update
+          sudo apt-get --assume-yes --no-install-recommends install openvpn
+
+      - name: Setup VPN config
+        run: |
+          echo "${{ secrets.SECRET_USERNAME_PASSWORD }}" > secret.txt
+
+      - name: Start OpenVPN
+        run: sudo openvpn --config pfSense-UDP4-964-grimaldev-ios-config.ovpn --auth-user-pass your_credentials_file.txt &
+        env:
+          SERVER_ADDRESS: ${{ secrets.VPN_SERVER_ADDRESS }}
+
+      - name: Wait for VPN connection
+        timeout-minutes: 1
+        run: |
+          until ping -c1 $SERVER_ADDRESS; do
+            echo "Waiting for VPN connection..."
+            sleep 2
+          done
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@3.1.1
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./path/to/deploy
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+
+      - name: Cleanup
+        run: |
+          rm -f ca.crt user.crt user.key secret.txt tls.key
+
+      - name: Kill VPN connection
+        if: always()
+        run: |
+            sudo chmod 777 vpn.log
+            sudo killall openvpn
+
+      - name: Upload VPN logs
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+            name: VPN logs
+            path: vpn.log
