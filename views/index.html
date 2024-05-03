@@ -1,41 +1,122 @@
 {{ block "index" . }}
 <html lang="en">
-<head>
+  <head>
     <title>Rulette Rousse</title>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
     <!--    Ligne pour integrer HTMX au projet-->
     <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body>
-    <h1>Rulette Rousse</h1>
-    <h2>Bonjour joueur nr : </h2>
-    <div id="btn_box">
-        {{ template "play_rand_btn" .}}
-        {{ template "play_friend_btn" .}}
-        {{ template "leaderboard_btn" .}}
+    <!--    Ligne pour integrer TailwindCSS au projet-->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="w-100">
+    <div class="bg-black h-screen flex items-center justify-center">
+      <main
+        class="flex items-center flex-col bg-gray-50 w-3/5 h-1/2 rounded-xl"
+        style="
+          background-image: url(&quot;/public/assets/bg-image-welcome.jpg&quot;);
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        "
+      >
+        <h1 class="text-7xl font-extrabold text-center py-4 text-gray-50">
+          Rulette Rousse
+        </h1>
+        <div
+          id="content"
+          class="relative h-full w-full flex items-center justify-center"
+        >
+          {{ template "homePage" . }}
+        </div>
+      </main>
     </div>
-
-</body>
+  </body>
 </html>
-{{ end }}
+{{ end }} {{ block "homePage" . }}
+<div id="btn_menu_box" class="flex flex-col p-3 w-3/5">
+  <button
+    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-2"
+    type="submit"
+    hx-target="#content"
+    hx-swap="innerHTML"
+    hx-get="/createGame"
+  >
+    Jouer
+  </button>
+  <button
+    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full my-2"
+    type="submit"
+    hx-target="#content"
+    hx-swap="innerHTML"
+    hx-get="/friendInvite"
+  >
+    Jouer avec un ami
+  </button>
+  <button
+    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full my-2"
+    type="submit"
+  >
+    leaderboard
+  </button>
+</div>
+{{ end }} {{ block "playFriendPage" . }}
+<div id="play-friend-code-box">
+  <form class="flex items-center flex-col">
+    <input
+      type="text"
+      id="play-friend-code-box"
+      name="code"
+      value=""
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="Entrer code ami"
+      required
+    />
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-2"
+      type="submit"
+    >
+      Jouer
+    </button>
+  </form>
 
-{{ block "play_rand_btn" . }}
-<a href="#" hx-post="/play_random">
-    <button type="submit">Jouer</button>
-</a>
-{{ end }}
+  <button
+    type="button"
+    class="text-gray-900 bg-white hover:bg-gray-300 text-white font-bold py-2 px-4 rounded-full absolute left-0 bottom-0 m-2"
+    hx-target="#content"
+    hx-swap="innerHTML"
+    hx-get="/homePage"
+  >
+    <
+  </button>
+</div>
+{{ end }} {{ block "createGame" . }}
+<div id="play-friend-code-box">
+  <h2 class="text-white text-3xl" style="backdrop-filter: blur(3px)">
+    Donnez ce code à un ami
+  </h2>
+  <div
+    class="bg-gray-800 flex justify-center items-center w-100 px-5 rounded-xl"
+  >
+    <h1 class="text-5xl font-extrabold text-center py-4 text-gray-50">
+      {{ .Code }}
+    </h1>
+  </div>
 
-{{ block "play_friend_btn" . }}
-<a href="#" hx-post="/play_friend">
-    <button type="submit">Jouer avec un ami</button>
-</a>
-{{ end }}
-
-{{ block "leaderboard_btn" . }}
-<a href="#" hx-post="/leaderboard">
-    <button type="submit">Tableau des scores</button>
-</a>
+  <button
+    type="button"
+    class="text-gray-900 bg-white hover:bg-gray-300 text-white font-bold py-2 px-4 rounded-full absolute left-0 bottom-0 m-2"
+    hx-target="#content"
+    hx-swap="innerHTML"
+    hx-get="/homePage"
+  >
+    <
+  </button>
+</div>
 {{ end }}
